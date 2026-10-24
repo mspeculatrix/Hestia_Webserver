@@ -1,0 +1,13 @@
+---
+
+services:
+  # Webserver - Apache & PHP
+  http:
+    container_name: hestia-web
+    image: hestia-apache-php
+    build: ./images/hestia-http
+    restart: unless-stopped
+    volumes:
+      - ./public_html:/var/www/html
+    ports:
+      - 8100:80
