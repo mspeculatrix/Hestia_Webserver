@@ -1,0 +1,18 @@
+{
+  "name": "hestia_webserver",
+  "version": "1.0.0",
+  "description": "The aim here is to use a website as a main command and commnication hub for the Hestia robot.",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass -w scss/main.scss public_html/css/main.css"
+  },
+  "devDependencies": {
+    "sass": "^1.107.1"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true
+  }
+}

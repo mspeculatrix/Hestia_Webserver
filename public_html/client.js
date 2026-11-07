@@ -94,10 +94,10 @@ function startStateChecking() {
     return checkID // Not currently used - for future use
 }
 
-function sendMessage(msg, btn) {
+function sendMessage(msg) {
+    console.log(msg)
     wsState = wsSocketState()
     if (wsState === WebSocket.OPEN) {
-        clickBtn(btn, 'active')
         terminal.print('Sending: ')
         terminal.print(msg + ' - ')
         let sent = wsSocketSend(msg)
@@ -114,9 +114,46 @@ function sendMessage(msg, btn) {
 window.addEventListener('DOMContentLoaded', () => {
     connectBtn = document.getElementById('wsConnect')
     const statusBtn = document.getElementById('statusBtn')
-    const sendBtn = document.getElementById('wsSend')
     const messageText = document.getElementById('wsSendMsg')
     consoleEl = document.getElementById('console')
+
+    // Helper function to wire up a button group with exclusive 'active' states
+    const setupButtonGroup = (ids) => {
+        // Map the IDs to actual DOM elements and filter out any missing ones
+        const buttons = ids.map(id => document.getElementById(id)).filter(Boolean)
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove 'active' from all buttons in this specific group
+                buttons.forEach(b => b.classList.remove('active'))
+
+                // Add 'active' to the clicked button
+                btn.classList.add('active')
+
+                // Send the message using the button's ID
+                sendMessage(btn.id)
+            });
+        });
+    };
+
+    // Movement buttons
+    setupButtonGroup([
+        'DIR_STOP',
+        'FWD_STR',
+        'FWD_TURN_L',
+        'FWD_TURN_R',
+        'REV_STR',
+        'REV_TURN_L',
+        'REV_TURN_R',
+        'ROTATE_L',
+        'ROTATE_R'
+    ])
+
+    // Speed buttons
+    setupButtonGroup([
+        'SP_CRAWL', 'SP_SLOW', 'SP_NORMAL', 'SP_FAST', 'SP_MAX'
+    ])
+
 
     // Assign to outer variable
     terminal = new Console(consoleEl)
@@ -125,13 +162,8 @@ window.addEventListener('DOMContentLoaded', () => {
     messageText.addEventListener('keyup', (event) => {
         event.preventDefault();
         if (event.code === 'Enter') {
-            sendMessage(messageText.value, sendBtn)
+            sendMessage(messageText.value)
         }
-    })
-
-    // Send contents of message input field when send button clicked
-    sendBtn.addEventListener('click', () => {
-        sendMessage(messageText.value, sendBtn)
     })
 
     connectBtn.addEventListener('click', () => {

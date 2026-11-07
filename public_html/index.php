@@ -15,33 +15,82 @@ include_once(module('head_begin'));
 <body>
 	<?php
 	include_once(module('content_begin'));
-	include_once(module('masthead'));
+	// include_once(module('masthead'));
 	?>
 
 	<div class="container">
 
 		<div class="row">
-			<div class="col-3 ctrl">
-				<button type="button" id="wsConnect" class="ctrlBtn idle">connect</button>
-			</div>
-			<div class="col-3 ctrl">
-				<p id="status" class="cfg">-!-</p>
-			</div>
-			<div class="col-3 ctrl">
-				<button type="button" id="statusBtn" class="ctrlBtn">status</button>
-			</div>
-			<div class="col-3 ctrl">
-			</div>
+			<button type="button" id="wsConnect" class="ctrlBtn idle">connect</button>
 		</div>
 
+		<div id="remote_control">
+
+			<div class="row">
+				<div class="col-4 rc">
+					<button type="button" id="FWD_TURN_L" class="rcBtn dirBtn inverted">&#10138;</button>
+				</div>
+				<div class="col-4 rc">
+					<button type="button" id="FWD_STR" class="rcBtn dirBtn">&#10506;</button>
+				</div>
+				<div class="col-4 rc">
+					<button type="button" id="FWD_TURN_R" class="rcBtn dirBtn">&#10138;</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-4 rc">
+					<button type="button" id="ROTATE_L" class="rcBtn dirBtn">&cularr;</button>
+				</div>
+				<div class="col-4 rc">
+					<button type="button" id="DIR_STOP" class="rcBtn dirBtn active">&#x23F9;</button>
+				</div>
+				<div class="col-4 rc">
+					<button type="button" id="ROTATE_R" class="rcBtn dirBtn">&curarr;</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-4 rc">
+					<button type="button" id="REV_TURN_L" class="rcBtn dirBtn inverted">&#10136;</button>
+				</div>
+				<div class="col-4 rc">
+					<button type="button" id="REV_STR" class="rcBtn dirBtn">&#10507;</button>
+				</div>
+				<div class="col-4 rc">
+					<button type="button" id="REV_TURN_R" class="rcBtn dirBtn">&#10136;</button>
+				</div>
+			</div>
+			<hr class="divider">
+
+			<!-- SPEED BUTTONS --------------------------------------------- -->
+			<div class="row">
+				<div class="col-2 rc">
+					<button type="button" id="SP_CRAWL" class="rcBtn speedBtn">&lt;&lt;</button>
+				</div>
+				<div class="col-2 rc">
+					<button type="button" id="SP_SLOW" class="rcBtn speedBtn">&lt;</button>
+				</div>
+				<div class="col-4 rc">
+					<button type="button" id="SP_NORMAL" class="rcBtn speedBtn active">std</button>
+				</div>
+				<div class="col-2 rc">
+					<button type="button" id="SP_FAST" class="rcBtn speedBtn">&GT;</button>
+				</div>
+				<div class="col-2 rc">
+					<button type="button" id="SP_MAX" class="rcBtn speedBtn">&gt;&gt;</button>
+				</div>
+			</div><!-- row -->
+		</div><!-- remote control container -->
+		<hr class="divider">
+
+		<!-- COMMAND INPUT ------------------------------------------------- -->
 		<div class="row">
-			<div class="col-6">
-				<input type="text" class="form-control" id="wsSendMsg">
+			<div class="col-10">
+				<input type="text" class="form-control command" id="wsSendMsg">
 			</div>
-			<div class="col-3 ctrl">
-				<button type="button" id="wsSend" class="ctrlBtn">send</button>
-			</div>
-			<div class="col-3 ctrl">
+			<div class="col-2 rc">
+				<button type="button" id="statusBtn" class="rcBtn sml"><strong>&#9432;</strong></button>
 			</div>
 		</div>
 
@@ -51,7 +100,6 @@ include_once(module('head_begin'));
 				</div>
 			</div>
 		</div>
-
 	</div><!-- /.container -->
 
 

@@ -69,7 +69,7 @@ button {
     }
     &.ctrlBtn {
         margin: 5px auto;
-        background: #aca;
+        background: rgb(170, 185, 170);
         min-width: 180px;
         color: #222;
         &.active {
@@ -79,6 +79,33 @@ button {
         &.pressed {
             background: #ebb66c;
             color: #111;
+        }
+    }
+    &.rcBtn {
+        width: 90%;
+        margin: 5px auto;
+        min-height: 50px;
+        &.dirBtn {
+            font-size: 2em;
+            background-color: rgb(57, 55, 88);
+        }
+        &.speedBtn {
+            background-color: rgb(13, 5, 156);
+        }
+        &.active {
+            background: #292;
+            color: #eee;
+        }
+        &.inverted {
+            transform: scale(-1, 1);
+            -moz-transform: scale(-1, 1);
+            -webkit-transform: scale(-1, 1);
+            -o-transform: scale(-1, 1);
+            -ms-transform: scale(-1, 1);
+            transform: scale(-1, 1);
+        }
+        &.sml {
+            min-height: 25px;
         }
     }
 }
@@ -94,6 +121,10 @@ div {
     }
     &#masthead {
         padding: 10px 0;
+    }
+    &#remote_control {
+        text-align: center;
+        background-color: black;
     }
 }
 
@@ -119,10 +150,24 @@ header {
     width: 100%;
 }
 
+hr {
+    &.divider {
+        padding: 5px 10px; margin: 0;
+    }
+}
+
 img {
     opacity: 1;
     &.mx80img {
         margin: 0 auto;
+    }
+}
+
+input {
+    &.command {
+        background-color: rgb(191, 210, 217);
+        border-color: rgb(44, 59, 71);
+        color: #262936;
     }
 }
 
