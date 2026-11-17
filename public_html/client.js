@@ -8,12 +8,33 @@
  * doing nothing (eg, in case the connection drops).
  */
 
-const ws_ip = '10.0.150.150'
+let ws_ip = '10.0.128.98'
 const ws_port = '8080'
 const ws_route = ''
 const checkStateInterval = 1000
 const buttonStatePause = 1000
 let connectBtn
+
+const directions = [
+        'DIR_STOP',
+        'FWD_STR',
+        'FWD_TURN_L',
+        'FWD_TURN_R',
+        'REV_STR',
+        'REV_TURN_L',
+        'REV_TURN_R',
+        'ROTATE_L',
+        'ROTATE_R'
+    ]
+
+const speeds = [ 'SP_CRAWL', 'SP_SLOW', 'SP_NORMAL', 'SP_FAST', 'SP_MAX' ]
+
+let speedCalL
+let speedCalR
+let baseSpeed
+let adc0Trig
+// let adc1Trig
+// let adc2Trig
 
 let recvMsg = ''
 let consoleEl
@@ -41,8 +62,19 @@ function receiveMsg(event) {
     // would also be the place to take action on received data/commands
     if (terminal && recvMsg) {
         if (Object.keys(recvMsg).length > 0) {
-            for (const key in recvMsg) {
-                terminal.print(`${key}: ${recvMsg[key]}`)
+            switch (recvMsg['type']) {
+                case 'CFG_STAT':
+                    speedCalL.value = recvMsg['sp_cal_l']
+                    speedCalR.value = recvMsg['sp_cal_r']
+                    baseSpeed.value = recvMsg['base_speed']
+                    adc0Trig.value = recvMsg['adc0_trigger']
+                    // adc1Trig.value = recvMsg['adc1_trigger']
+                    // adc2Trig.value = recvMsg['adc2_trigger']
+                    break;
+                default:
+                    for (const key in recvMsg) {
+                       terminal.print(`${key}: ${recvMsg[key]}`)
+                    }
             }
         }
     }
@@ -98,8 +130,7 @@ function sendMessage(msg) {
     console.log(msg)
     wsState = wsSocketState()
     if (wsState === WebSocket.OPEN) {
-        terminal.print('Sending: ')
-        terminal.print(msg + ' - ')
+        terminal.print(msg)
         let sent = wsSocketSend(msg)
         if (sent) {
             terminal.print('Sent!')
@@ -113,9 +144,17 @@ function sendMessage(msg) {
 
 window.addEventListener('DOMContentLoaded', () => {
     connectBtn = document.getElementById('wsConnect')
+    const ipInput = document.getElementById('cfg_ip')
     const statusBtn = document.getElementById('statusBtn')
     const messageText = document.getElementById('wsSendMsg')
     consoleEl = document.getElementById('console')
+    speedCalL = document.getElementById('cfg_sp_cal_l')
+    speedCalR = document.getElementById('cfg_sp_cal_r')
+    baseSpeed = document.getElementById('cfg_base_sp')
+    adc0Trig = document.getElementById('adc0_trigger')
+    // adc1Trig = document.getElementById('adc1_trigger')
+    // adc2Trig = document.getElementById('adc2_trigger')
+    const cfgBtn = document.getElementById('cfgBtn')
 
     // Helper function to wire up a button group with exclusive 'active' states
     const setupButtonGroup = (ids) => {
@@ -136,34 +175,73 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    ipInput.value = ws_ip
+
     // Movement buttons
-    setupButtonGroup([
-        'DIR_STOP',
-        'FWD_STR',
-        'FWD_TURN_L',
-        'FWD_TURN_R',
-        'REV_STR',
-        'REV_TURN_L',
-        'REV_TURN_R',
-        'ROTATE_L',
-        'ROTATE_R'
-    ])
+    setupButtonGroup(directions)
 
     // Speed buttons
-    setupButtonGroup([
-        'SP_CRAWL', 'SP_SLOW', 'SP_NORMAL', 'SP_FAST', 'SP_MAX'
-    ])
+    setupButtonGroup(speeds)
 
 
     // Assign to outer variable
     terminal = new Console(consoleEl)
 
+    ipInput.addEventListener('keyup', (event) => {
+        event.preventDefault();
+        if (event.key === 'Enter') {
+            ws_ip = ipInput.value
+            ipInput.blur()
+        }
+    })
+
+    speedCalL.addEventListener('keyup', (event) => {
+        event.preventDefault();
+        if (event.key === 'Enter') {
+            let msg = 'CFG:SP_CAL_L:' + speedCalL.value
+            sendMessage(msg)
+            speedCalL.blur()
+        }
+    })
+
+    speedCalR.addEventListener('keyup', (event) => {
+        event.preventDefault();
+        if (event.key === 'Enter') {
+            let msg = 'CFG:SP_CAL_R:' + speedCalR.value
+            sendMessage(msg)
+            speedCalR.blur()
+        }
+    })
+
+    baseSpeed.addEventListener('keyup', (event) => {
+        event.preventDefault();
+        if (event.key === 'Enter') {
+            let msg = 'CFG:BASE_SPEED:' + baseSpeed.value
+            sendMessage(msg)
+            baseSpeed.blur()
+        }
+    })
+
+    adc0Trig.addEventListener('keyup', (event) => {
+        event.preventDefault();
+        if (event.key === 'Enter') {
+            let msg = 'CFG:ADC0_TRIG:' + adc0Trig.value
+            sendMessage(msg)
+            adc0Trig.blur()
+        }
+    })
+
     // Send contents of message input field when <return> pressed
     messageText.addEventListener('keyup', (event) => {
         event.preventDefault();
-        if (event.code === 'Enter') {
-            sendMessage(messageText.value)
+        if (event.key === 'Enter') {
+            sendMessage(messageText.value.toUpperCase())
+            messageText.blur()
         }
+    })
+
+    cfgBtn.addEventListener('click', () => {
+        sendMessage('CONFIG')
     })
 
     connectBtn.addEventListener('click', () => {

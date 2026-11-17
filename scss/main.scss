@@ -12,6 +12,21 @@
 }
 
 @font-face {
+    font-family: "EnigmaSans";
+    src: url("/assets/fonts/EnigmaSans.ttf")
+}
+
+@font-face {
+    font-family: "IBM_VGA";
+    src: url("/assets/fonts/IBM_VGA_9x16-2x.ttf")
+}
+
+@font-face {
+    font-family: "ShareTechMono";
+    src: url("/assets/fonts/ShareTechMono-Regular.ttf")
+}
+
+@font-face {
     font-family: "SyneMono";
     src: url("/assets/fonts/SyneMono-Regular.ttf")
 }
@@ -28,6 +43,9 @@
 
 * {
     box-sizing: border-box;
+    &.centred {
+        text-align: center;
+    }
 }
 
 a {
@@ -44,7 +62,8 @@ a {
 
 body {
     color: config.$fg-primary;
-    background-color: config.$bg-primary;
+    background-image: url('/assets/bg/steel.jpg');
+    background-size: 100% 100%;
     font-family: config.$font-main;
     height: 100%;
     margin:0;
@@ -52,13 +71,14 @@ body {
 
 button {
     font-family: config.$font-button;
+    font-weight: bold;
     text-align: center;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     background: #922;
     color: #ccc;
-    padding: 0 20px;
+    padding: 0 5px;
     &.on {
         background: #292;
         color: white;
@@ -70,7 +90,8 @@ button {
     &.ctrlBtn {
         margin: 5px auto;
         background: rgb(170, 185, 170);
-        min-width: 180px;
+        // min-width: 100px;
+        width: 100%;
         color: #222;
         &.active {
             background: #802608;
@@ -111,13 +132,17 @@ button {
 }
 
 div {
-    &.content {
-	    background-size:cover;
+    &#content {
+        padding: 10px 5px;
+	    // background-size:cover;
 	    min-height: 500px;
     }
     &.ctrl {
         text-align: center;
         margin: 0 auto;
+    }
+    &.rc {
+        text-align: center;
     }
     &#masthead {
         padding: 10px 0;
@@ -125,6 +150,10 @@ div {
     &#remote_control {
         text-align: center;
         background-color: black;
+        padding: 15px;
+        border: 5px solid grey;
+        background-image: url('/assets/bg/steel.jpg');
+        background-size: 100% 100%;
     }
 }
 
@@ -164,10 +193,15 @@ img {
 }
 
 input {
+    font-family: config.$font-mono;
+    border-color: rgb(44, 59, 71);
+    color: #262936;
+    vertical-align: middle;
     &.command {
-        background-color: rgb(191, 210, 217);
-        border-color: rgb(44, 59, 71);
-        color: #262936;
+        background-color: rgb(196, 194, 186);
+    }
+    &.config {
+        background-color: rgb(196, 194, 186);
     }
 }
 
@@ -181,6 +215,14 @@ p {
         margin: 5px auto;
         font-family: config.$font-dm;
         font-size: 1.5em;
+    }
+    &.label {
+        font-family: config.$font-label;
+        &.main {
+            font-weight: bold;
+            font-size: 2em;
+            vertical-align: middle;
+        }
     }
     &.msg {
       font-family: config.$font-dm;
@@ -210,10 +252,6 @@ small {
     position: relative;
     text-align:center;
     margin: 0 auto;
-}
-
-.centered {
-    text-align:center;
 }
 
 .hide {
