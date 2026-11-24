@@ -8,7 +8,7 @@
  * doing nothing (eg, in case the connection drops).
  */
 
-let ws_ip = '10.0.128.98'
+let ws_ip = '10.0.160.10'
 const ws_port = '8080'
 const ws_route = ''
 const checkStateInterval = 1000
@@ -72,9 +72,13 @@ function receiveMsg(event) {
                     // adc2Trig.value = recvMsg['adc2_trigger']
                     break;
                 default:
+                    let pstr = []
                     for (const key in recvMsg) {
-                       terminal.print(`${key}: ${recvMsg[key]}`)
+                        if(recvMsg[key]) {    // don't bother with blank entries
+                            pstr.push(`${key}: ${recvMsg[key]}`)
+                        }
                     }
+                    terminal.print('-- ' + pstr.join(' | '))
             }
         }
     }
@@ -132,9 +136,7 @@ function sendMessage(msg) {
     if (wsState === WebSocket.OPEN) {
         terminal.print(msg)
         let sent = wsSocketSend(msg)
-        if (sent) {
-            terminal.print('Sent!')
-        } else {
+        if (!sent) {
             terminal.print('Send failed!')
         }
     } else {
@@ -177,21 +179,80 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ipInput.value = ws_ip
 
+    // Assign to outer variable
+    terminal = new Console(consoleEl)
+
+    // -------------------------------------------------------------------------
+    // ---   DIRECTION & SPEED BUTTONS
+    // -------------------------------------------------------------------------
+
     // Movement buttons
     setupButtonGroup(directions)
 
     // Speed buttons
     setupButtonGroup(speeds)
 
+    // -------------------------------------------------------------------------
+    // ---   CONTROL BUTTONS
+    // -------------------------------------------------------------------------
 
-    // Assign to outer variable
-    terminal = new Console(consoleEl)
+    connectBtn.addEventListener('click', () => {
+        // Update wsState to make sure we're up to date
+        wsState = wsSocketState()
+        switch (wsState) {
+            case WebSocket.CONNECTING:
+                terminal.print('Connection in progress...')
+                break
+            case WebSocket.OPEN:
+                // Currently connected, so disconnect
+                terminal.print('Disconnecting... ')
+                wsSocketDisconnect()
+                break
+            case WebSocket.CLOSING:
+                terminal.print('Currently disconnecting...')
+                break
+            case WebSocket.CLOSED:
+                // Currently disconnected, so connect
+                terminal.print('Connecting... ')
+                wsSocketConnect(receiveMsg, ws_ip, ws_port, ws_route)
+                break
+        }
+        setTimeout(() => {
+            if (wsSocketState() !== WebSocket.OPEN) {
+                terminal.print('No connection')
+            }
+        }, 5000)
+    })
+
+    // Send the 'STATUS' command
+    statusBtn.addEventListener('click', () => {
+        clickBtn(statusBtn, '...')
+        sendMessage('STATUS')
+    })
+
+    cfgBtn.addEventListener('click', () => {
+        clickBtn(cfgBtn, '...')
+        sendMessage('CONFIG')
+    })
+
+    // -------------------------------------------------------------------------
+    // ---   INPUT FIELDS
+    // -------------------------------------------------------------------------
 
     ipInput.addEventListener('keyup', (event) => {
         event.preventDefault();
         if (event.key === 'Enter') {
             ws_ip = ipInput.value
             ipInput.blur()
+        }
+    })
+
+    // Send contents of message input field when <return> pressed
+    messageText.addEventListener('keyup', (event) => {
+        event.preventDefault();
+        if (event.key === 'Enter') {
+            sendMessage(messageText.value.toUpperCase())
+            messageText.blur()
         }
     })
 
@@ -229,52 +290,6 @@ window.addEventListener('DOMContentLoaded', () => {
             sendMessage(msg)
             adc0Trig.blur()
         }
-    })
-
-    // Send contents of message input field when <return> pressed
-    messageText.addEventListener('keyup', (event) => {
-        event.preventDefault();
-        if (event.key === 'Enter') {
-            sendMessage(messageText.value.toUpperCase())
-            messageText.blur()
-        }
-    })
-
-    cfgBtn.addEventListener('click', () => {
-        sendMessage('CONFIG')
-    })
-
-    connectBtn.addEventListener('click', () => {
-        // Update wsState to make sure we're up to date
-        wsState = wsSocketState()
-        switch (wsState) {
-            case WebSocket.CONNECTING:
-                terminal.print('Connection in progress...')
-                break
-            case WebSocket.OPEN:
-                // Currently connected, so disconnect
-                terminal.print('Disconnecting... ')
-                wsSocketDisconnect()
-                break
-            case WebSocket.CLOSING:
-                terminal.print('Currently disconnecting...')
-                break
-            case WebSocket.CLOSED:
-                // Currently disconnected, so connect
-                terminal.print('Connecting... ')
-                wsSocketConnect(receiveMsg, ws_ip, ws_port, ws_route)
-                break
-        }
-        setTimeout(() => {
-            if (wsSocketState() !== WebSocket.OPEN) {
-                terminal.print('No connection')
-            }
-        }, 5000)
-    })
-
-    // Send the 'STATUS' command when status button clicked
-    statusBtn.addEventListener('click', () => {
-        sendMessage('STATUS', statusBtn)
     })
 
     startStateChecking()

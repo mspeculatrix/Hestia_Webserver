@@ -73,33 +73,31 @@ button {
     font-family: config.$font-button;
     font-weight: bold;
     text-align: center;
+    color: grey;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background: #922;
-    color: #ccc;
     padding: 0 5px;
-    &.on {
-        background: #292;
-        color: white;
-    }
-    &.pressed {
-        background: #292;
-        color: white;
-    }
+    cursor: pointer;
+    border: none;
+    box-shadow:
+        0 1px 1px #fff, /*bottom external highlight*/
+        0 -1px 1px #666, /*top external shadow*/
+        inset 0 -1px 1px rgba(0,0,0,0.5), /*bottom internal shadow*/
+        inset 0 1px 1px rgba(255,255,255,0.8); /*top internal highlight*/
     &.ctrlBtn {
         margin: 5px auto;
-        background: rgb(170, 185, 170);
+        background: rgb(185, 189, 185);
         // min-width: 100px;
         width: 100%;
-        color: #222;
-        &.active {
-            background: #802608;
-            color: #eee;
-        }
+        color: #252525;
         &.pressed {
-            background: #ebb66c;
-            color: #111;
+            background: rgb(239, 152, 46);
+            color: rgb(81, 81, 81);
+         }
+        &.active {
+            background-color: #292;
+            color: #eee;
         }
     }
     &.rcBtn {
@@ -111,12 +109,20 @@ button {
             background-color: rgb(57, 55, 88);
         }
         &.speedBtn {
-            background-color: rgb(13, 5, 156);
+            background-color: rgb(67, 63, 143);
+        }
+        &.pressed {
+            background: rgb(239, 152, 46);
+            color: rgb(81, 81, 81);
         }
         &.active {
-            background: #292;
+            background-color: #292;
             color: #eee;
-        }
+            box-shadow:
+                0 1px 1px 2px #2c2b2b, /*bottom external highlight*/
+                0 -1px 1px 2px #777575, /*top external shadow*/
+                inset 0 -2px 2px 2px rgba(0,0,0,0.5), /*bottom internal shadow*/
+                inset 0 1px 1px 3px rgba(36, 36, 36, 0.8); /*top internal highlight*/        }
         &.inverted {
             transform: scale(-1, 1);
             -moz-transform: scale(-1, 1);
@@ -124,9 +130,6 @@ button {
             -o-transform: scale(-1, 1);
             -ms-transform: scale(-1, 1);
             transform: scale(-1, 1);
-        }
-        &.sml {
-            min-height: 25px;
         }
     }
 }
@@ -144,16 +147,15 @@ div {
     &.rc {
         text-align: center;
     }
-    &#masthead {
-        padding: 10px 0;
-    }
     &#remote_control {
         text-align: center;
         background-color: black;
         padding: 15px;
-        border: 5px solid grey;
+        border: 3px solid rgb(93, 93, 93);
+        box-shadow: 1px 1px 5px #555 inset;
         background-image: url('/assets/bg/steel.jpg');
         background-size: 100% 100%;
+
     }
 }
 
@@ -195,6 +197,7 @@ img {
 input {
     font-family: config.$font-mono;
     border-color: rgb(44, 59, 71);
+    box-shadow: 1px 1px 5px #555 inset;
     color: #262936;
     vertical-align: middle;
     &.command {
@@ -268,7 +271,8 @@ div.console-box {
     width: 100%;
     height: 300px;
     padding: 5px 15px;
-    border: 5px solid grey;
+    border: 3px solid rgb(93, 93, 93);
+    box-shadow: 1px 1px 5px #555 inset;
     margin: 10px auto;
 }
 

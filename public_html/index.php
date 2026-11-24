@@ -1,5 +1,5 @@
 <?php
-define('APP_NAME', 'ws_client');
+define('APP_NAME', 'hestia_c2');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/include/std_config.php');
 ?>
 <!DOCTYPE html>
@@ -13,12 +13,7 @@ include_once(module('head_begin'));
 </head>
 
 <body>
-	<?php
-	include_once(module('content_begin'));
-	// include_once(module('masthead'));
-	?>
-
-	<div id="content" class="container">
+	<div id="content" class="content container" role="main">
 
 		<div class="row">
 			<div class="col-6">
@@ -28,7 +23,7 @@ include_once(module('head_begin'));
 				<input type="text" class="form-control config" id="cfg_ip" value="0.0.0.0">
 			</div>
 			<div class="col-3 rc">
-				<button type="button" id="wsConnect" class="ctrlBtn idle">connect</button>
+				<button type="button" id="wsConnect" class="ctrlBtn">connect</button>
 			</div>
 		</div>
 
@@ -99,7 +94,7 @@ include_once(module('head_begin'));
 				<input type="text" class="form-control command" id="wsSendMsg">
 			</div>
 			<div class="col-2 rc">
-				<button type="button" id="statusBtn" class="rcBtn sml">
+				<button type="button" id="statusBtn" class="ctrlBtn">
 					<strong>&#9432;</strong>
 				</button>
 			</div>
@@ -128,7 +123,7 @@ include_once(module('head_begin'));
 					<input type="text" class="form-control config" id="cfg_base_sp" value="80">
 			</div>
 			<div class="col-3">
-				<button type="button" id="cfgBtn" class="ctrlBtn">&lt;CFG</button>
+				<button type="button" id="cfgBtn" class="ctrlBtn">CFG</button>
 			</div>
 		</div>
 
@@ -149,12 +144,9 @@ include_once(module('head_begin'));
 			</div>
 		</div>
 
-	</div><!-- /.container -->
+	</div><!-- .content .container -->
 
-
-	<?php
-	include_once(module('content_end'));
-	?>
+	<?php include(module('footer')); ?>
 </body>
 
 </html>

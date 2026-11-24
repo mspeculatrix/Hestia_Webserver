@@ -8,7 +8,7 @@ class Console {
         // Create a line element
         const line = document.createElement('div')
         line.className = 'console-line'
-        line.textContent = msgText // Safely handles special chars without innerHTML parsing
+        line.textContent = msgText // Handles special chars without innerHTML parsing
 
         this.consoleElement.appendChild(line)
 

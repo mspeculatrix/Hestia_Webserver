@@ -64,34 +64,28 @@ button {
   font-family: "EnigmaSans", "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
   font-weight: bold;
   text-align: center;
+  color: grey;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  background: #922;
-  color: #ccc;
   padding: 0 5px;
-}
-button.on {
-  background: #292;
-  color: white;
-}
-button.pressed {
-  background: #292;
-  color: white;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 1px 1px #fff, 0 -1px 1px #666, inset 0 -1px 1px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.8); /*top internal highlight*/
 }
 button.ctrlBtn {
   margin: 5px auto;
-  background: rgb(170, 185, 170);
+  background: rgb(185, 189, 185);
   width: 100%;
-  color: #222;
-}
-button.ctrlBtn.active {
-  background: #802608;
-  color: #eee;
+  color: #252525;
 }
 button.ctrlBtn.pressed {
-  background: #ebb66c;
-  color: #111;
+  background: rgb(239, 152, 46);
+  color: rgb(81, 81, 81);
+}
+button.ctrlBtn.active {
+  background-color: #292;
+  color: #eee;
 }
 button.rcBtn {
   width: 90%;
@@ -103,11 +97,16 @@ button.rcBtn.dirBtn {
   background-color: rgb(57, 55, 88);
 }
 button.rcBtn.speedBtn {
-  background-color: rgb(13, 5, 156);
+  background-color: rgb(67, 63, 143);
+}
+button.rcBtn.pressed {
+  background: rgb(239, 152, 46);
+  color: rgb(81, 81, 81);
 }
 button.rcBtn.active {
-  background: #292;
+  background-color: #292;
   color: #eee;
+  box-shadow: 0 1px 1px 2px #2c2b2b, 0 -1px 1px 2px #777575, inset 0 -2px 2px 2px rgba(0, 0, 0, 0.5), inset 0 1px 1px 3px rgba(36, 36, 36, 0.8); /*top internal highlight*/
 }
 button.rcBtn.inverted {
   transform: scale(-1, 1);
@@ -116,9 +115,6 @@ button.rcBtn.inverted {
   -o-transform: scale(-1, 1);
   -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
-}
-button.rcBtn.sml {
-  min-height: 25px;
 }
 
 div#content {
@@ -132,14 +128,12 @@ div.ctrl {
 div.rc {
   text-align: center;
 }
-div#masthead {
-  padding: 10px 0;
-}
 div#remote_control {
   text-align: center;
   background-color: black;
   padding: 15px;
-  border: 5px solid grey;
+  border: 3px solid rgb(93, 93, 93);
+  box-shadow: 1px 1px 5px #555 inset;
   background-image: url("/assets/bg/steel.jpg");
   background-size: 100% 100%;
 }
@@ -181,6 +175,7 @@ img.mx80img {
 input {
   font-family: "NotoSansMono", "Courier New", Courier, monospace;
   border-color: rgb(44, 59, 71);
+  box-shadow: 1px 1px 5px #555 inset;
   color: #262936;
   vertical-align: middle;
 }
@@ -247,7 +242,8 @@ div.console-box {
   width: 100%;
   height: 300px;
   padding: 5px 15px;
-  border: 5px solid grey;
+  border: 3px solid rgb(93, 93, 93);
+  box-shadow: 1px 1px 5px #555 inset;
   margin: 10px auto;
 }
 
